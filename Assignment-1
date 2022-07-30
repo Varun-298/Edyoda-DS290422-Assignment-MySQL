@@ -1,0 +1,106 @@
+//Assignment – 1 : Assignment MySQL//
+
+//To Create SalesPeople Tables//
+
+CREATE TABLE SalesPeople (
+Snum int,
+Sname varchar(255),
+City varchar(255),
+Comm FLOAT(0,2),
+UNIQUE (Sname)
+);
+
+
+//To Add data into SalesPeople Table//
+
+INSERT INTO SalesPeople VALUES 
+(1001,'Peel','London', .12),
+(1002,'Serres','Sanjose', .13),
+(1004,'Motika','London', .11).
+(1007,'Rifkin','Barcelona', .15),
+(1003,'Axelrod','Newyork', .10)
+ ;
+
+//To Create Customers Table//
+
+CREATE TABLE Customers (
+Cnum int,
+Cname varchar(255),
+City varchar(255) NOT NULL,
+Snum int,
+PRIMARY KEY (Cnum)
+FOREIGN KEY (Snum) REFERENCES SalesPeople(Snum)
+);
+
+//To Add data into Customers table//
+
+INSERT INTO Customers VALUES 
+(2001, 'Hoffman', 'London', 1001),
+(2002, 'Giovanni', 'Rome', 1003),
+(2003, 'Liu', 'Sanjose', 1002),
+(2004, 'Grass', 'Berlin', 1002),
+(2006, 'Clemens', 'London', 1001),
+(2008, 'Cisneros', 'Sanjose', 1007),
+(2007, 'Pereira', 'Rome', 1004)
+ ;
+
+//To Create Orders Table//
+
+CREATE TABLE Orders (
+Onum int,
+Amt FLOAT(4,2),
+Odate varchar(255),
+Cnum int,
+Snum int,
+PRIMARY KEY (Onum)
+FOREIGN KEY (Cnum) REFERENCES Customers(Cnum)
+FOREIGN KEY (Snum) REFERENCES SalesPeople(Snum)
+);
+
+//To Add data into Orders Table//
+
+INSERT INTO Orders VALUES 
+(3001, 18.69, '03-10-1990 ', 2008, 1007),
+(3003, 767.19, '03-10-1990 ', 2001, 1001),
+(3002, 1900.10, '03-10-1990 ', 2007, 1004),
+(3005, 5160.45, '03-10-1990 ', 2003, 1002),
+(3006, 1098.16, '03-10-1990 ', 2008, 1007),
+(3009, 1713.23, '04-10-1990 ', 2002, 1003),
+(3007, 75.75, '04-10-1990 ', 2004, 1002),
+(3008, 4273.00, '05-10-1990 ', 2006, 1001),
+(3010, 1309.95, '06-10-1990 ', 2004, 1002),
+(3011, 9891.88, '06-10-1990 ', 2006, 1001)
+;
+
+Task-1: Count the number of Salesperson whose name begin with ‘a’/’A’
+
+SELECT COUNT(Sname)
+FROM SalesPeople
+WHERE Sname LIKE 'A%' OR 'a%';
+
+Task-2: Display all the Salesperson whose all orders worth is more than Rs. 2000.
+
+SELECT SalesPeople.Sname, Orders.Amt
+FROM Orders
+INNER JOIN SalesPeople ON Orders.Snum=SalesPeople.Snum
+WHERE Amt>2000;
+
+Task-3: Count the number of Salesperson belonging to Newyork.
+
+SELECT COUNT(Sname)
+FROM SalesPeople
+WHERE city = 'Newyork';
+
+
+
+
+Task-4: Display the number of Salespeople belonging to London and belonging to Paris.
+
+SELECT * FROM SalesPeople
+WHERE city = 'London' OR 'Paris';
+
+Task-5: Display the number of orders taken by each Salesperson and their date of orders.
+
+SELECT Sname,Odate, COUNT(Orders.Snum) AS TotalOrderQuantity
+FROM SalesPeople join Orders on (Orders.Snum = SalesPeople.Snum)
+group by Orders.Snum;
