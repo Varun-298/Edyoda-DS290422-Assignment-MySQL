@@ -8,6 +8,7 @@ Sname varchar(255),
 City varchar(255),
 Comm FLOAT(0,2),
 UNIQUE (Sname)
+PRIMARY KEY (Snum)
 );
 
 
